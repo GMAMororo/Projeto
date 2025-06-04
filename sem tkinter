@@ -1,0 +1,57 @@
+ # Questões e gabarito
+ perguntas = [
+        ("Qual a função do barramentos de dados em um computador?", {'A': "controlar os dispositivos externos", 'B': "Gerenciar a execução de programas", 'C': "Transportar informações entre os componentes", 'D': "Armazenar dados em cache"}, 'C'),
+        ("Qual das alternativas representa corretamente um dos pilares do pensamento computacional?", {'A': "Compactação de dados", 'B': "Análise estatística", 'C': "Decomposição", 'D': "Normalização"}, 'C'),
+        ("Qual é a saída do seguinte código Python?", {'A': "<class 'tuple'>", 'B': "<class 'int'>", 'C': "<class 'set'>", 'D': "<class 'list'>"}, 'D'),#trecho:print(type([1, 2, 3]))
+        ("Qual das linguagens abaixo é mais usada para estruturar o conteúdo de páginas web?", {'A': " HTML", 'B': "Python", 'C': "SQL", 'D': "JavaScript"}, 'A'),
+        ("A abstração, no pensamento computacional, refere-se a:", {'A': "Converter algoritmos em imagens", 'B': "Representar aspectos essenciais e ignorar os irrelevantes", 'C': " Eliminar dados úteis do problema", 'D': "Transformar linguagem natural em linguagem de máquina"}, 'B'),
+        ("Qual estrutura de controle em Python é usada para repetição com condição?", {'A': "if", 'B': "def", 'C': "try", 'D': "while"}, 'D'),
+        ("O que é a unidade lógica e aritmética (ULA)?", {'A': "Parte do processador que executa operações matemáticas e lógicas", 'B': "Controlador de entrada e saída", 'C': "Um registrador de propósito geral", 'D': "Um tipo de memória cache"}, 'A'),
+        ("O que o seguinte trecho de código imprime?", {'A': "oioioi", 'B': "oi*3", 'C': "3oi", 'D': "Erro de execução"}, 'A'),#trecho:print(3 * "oi")
+        ("Qual das tecnologias a seguir é usada para tornar páginas web interativas?", {'A': "CSS", 'B': "XML", 'C': "JavaScript", 'D': "PHP"}, 'C'),
+        ("Qual componente armazena temporariamente as instruções e dados usados pelo processador?", {'A': "Disco rígido", 'B': "Cache", 'C': "Placa de vídeo", 'D': "Unidade de disco óptico"}, 'B')
+    ]
+
+fase_atual = 0
+
+def iniciar_jogo():
+    global fase_atual
+    fase_atual = 0
+    tela_inicial.pack_forget()
+    mostrar_fase()
+
+def mostrar_fase():
+    global fase_atual
+
+    if fase_atual >= len(perguntas):
+
+        janela.quit()
+        return
+
+    for widget in tela_fase.winfo_children():
+        widget.destroy()
+
+    tela_fase.pack()
+
+    letras = list(opcoes.keys())
+
+    pergunta_texto, opcoes, correta = perguntas[fase_atual]
+
+def verificar_resposta(escolhida, correta):
+    global fase_atual
+    if escolhida == correta:
+        fase_atual += 1
+        mostrar_fase()
+    else:
+        tela_fase.pack_forget()
+        mostrar_derrota()
+
+def mostrar_derrota():
+    for widget in tela_derrota.winfo_children():
+        widget.destroy()
+
+    tela_derrota.pack()
+
+def voltar_para_tela_inicial():
+    tela_derrota.pack_forget()
+    tela_inicial.pack()
