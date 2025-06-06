@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import PhotoImage
 from tkinter import messagebox
+import time
+
+tempo_inicio = None
 
 perguntas = [
     ("Qual a função do barramento de dados em um computador?", #P1
@@ -47,9 +50,6 @@ perguntas = [
 ]
 
 
-
-
-
 BACKGROUND_COLOR = "white"
 TEXT_COLOR = "black"
 BUTTON_COLOR = "green"
@@ -87,6 +87,8 @@ app_label.pack(pady=10)
 imagem_pergunta_label = tk.Label(janela, bg=BACKGROUND_COLOR)
 imagem_pergunta_label.pack()
 
+tempo_label = tk.Label(janela, text="Tempo: 0s", bg=BACKGROUND_COLOR, fg="black", font=("Comic Sans", 18))
+
 
 question_label = tk.Label(janela, text="", wraplength=650, bg=BACKGROUND_COLOR, fg=TEXT_COLOR, font=FONT, justify="center")
 question_label.pack(pady=20)
@@ -116,10 +118,22 @@ btn_recomecar = tk.Button(janela, text="Recomeçar", width=30, bg=BUTTON_COLOR, 
 btn_creditos.pack(pady=5)
 
 
+def atualizar_tempo():
+    if tempo_inicio is not None:
+        tempo_atual = int(time.time() - tempo_inicio)
+        minutos = tempo_atual // 60
+        segundos = tempo_atual % 60
+        tempo_label.config(text=f"Tempo: {minutos:02d}:{segundos:02d}")
+        janela.after(1000, atualizar_tempo)
+
 
 
 def iniciar_quiz():
-    global pergunta_atual
+    global pergunta_atual, tempo_inicio
+
+    if tempo_inicio is None:
+        tempo_inicio = time.time()
+
     pergunta_atual = 0
     btn_iniciar.pack_forget()
     btn_creditos.pack_forget()
@@ -128,6 +142,8 @@ def iniciar_quiz():
     imagem_pergunta_label.pack()
     frame_opcoes.pack(pady=10)
     proxima_pergunta()
+    tempo_label.place(x=10, y=10)
+    atualizar_tempo()
 
 
 def proxima_pergunta():
@@ -161,16 +177,24 @@ def verificar_resposta(botao_idx):
 
 
 def finalizar_quiz():
-    question_label.config(text="Parabéns, você concluiu o Quiz! Fique feliz pelo que aprendeu.")
+
+
+    tempo_total = int(time.time() - tempo_inicio)
+    minutos = tempo_total // 60
+    segundos = tempo_total % 60
+
+    question_label.config(text=f"Parabéns, você concluiu o Quiz! Fique feliz pelo que aprendeu.\nTempo Total do Quiz: {minutos} minutos e {segundos} segundos")
     for btn in botoes:
         btn.config(text="", state=tk.DISABLED)
     frame_opcoes.pack_forget()
     imagem_pergunta_label.pack_forget()
     btn_recomecar.pack(pady=10)
     app_label.pack(pady=10)
+    tempo_label.place_forget()
 
 
 def mostrar_creditos():
+    tempo_label.place_forget()
     messagebox.showinfo("Créditos", "Desenvolvido por Guilherme e Guilherme\nUm é Guilherme Simão, e o Outro é Guilherme Marques")
 
 
