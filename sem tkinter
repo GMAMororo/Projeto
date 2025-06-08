@@ -12,30 +12,27 @@
         ("Qual componente armazena temporariamente as instruções e dados usados pelo processador?", {'A': "Disco rígido", 'B': "Cache", 'C': "Placa de vídeo", 'D': "Unidade de disco óptico"}, 'B')
     ]
 
-fase_atual = 0
+pergunta_atual = 0
 
-def iniciar_jogo():
-    global fase_atual
-    fase_atual = 0
+def iniciar_quiz():
+    global pergunta_atual
+    pergunta_atual = 0
     tela_inicial.pack_forget()
     mostrar_fase()
 
 def mostrar_fase():
-    global fase_atual
+    global pergunta_atual
 
-    if fase_atual >= len(perguntas):
+    if pergunta_atual < len(perguntas):
 
-        janela.quit()
-        return
+    keys = list(opcoes.keys())
 
     for widget in tela_fase.winfo_children():
         widget.destroy()
 
     tela_fase.pack()
 
-    letras = list(opcoes.keys())
-
-    pergunta_texto, opcoes, correta = perguntas[fase_atual]
+    opcoes, correta = perguntas[fase_atual]
 
 def verificar_resposta(escolhida, correta):
     global fase_atual
@@ -45,13 +42,3 @@ def verificar_resposta(escolhida, correta):
     else:
         tela_fase.pack_forget()
         mostrar_derrota()
-
-def mostrar_derrota():
-    for widget in tela_derrota.winfo_children():
-        widget.destroy()
-
-    tela_derrota.pack()
-
-def voltar_para_tela_inicial():
-    tela_derrota.pack_forget()
-    tela_inicial.pack()
