@@ -28,7 +28,6 @@ def mostrar_fase():
     keys = list(opcoes.keys())
 
     for widget in tela_fase.winfo_children():
-        widget.destroy()
 
     tela_fase.pack()
 
